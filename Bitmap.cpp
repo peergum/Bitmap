@@ -5,7 +5,7 @@
     of the original code written by Limor Fried/Ladyada
     for Adafruit Industries.
 
-    GPL v.3 licensed.
+    GNU General Public License v3.0
 
     For the Photon or Electron, the Adafruit_mfGFX and the
     Adafruit_SSD1351_Photon libraries are also required
