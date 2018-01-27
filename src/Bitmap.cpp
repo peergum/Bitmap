@@ -16,8 +16,8 @@
 
 #include "Bitmap.h"
 
-Bitmap::Bitmap(Adafruit_SSD1351 *display, char *filename) {
-    _filename = filename;
+Bitmap::Bitmap(Adafruit_SSD1351 *display, const char *filename) {
+    _filename = (char *)filename;
     _display = display;
     Log.info("Bitmap object created for file %s",filename);
 }
@@ -81,7 +81,7 @@ bool Bitmap::read(uint8_t x, uint8_t y) {
         return false;
     }
 
-    Log.info("Image size: %lu x %lu", bmpWidth, bmpHeight);
+    Log.info("Image size: %u x %u", bmpWidth, bmpHeight);
 
     // BMP rows are padded (if needed) to 4-byte boundary
     rowSize = 4*((bmpWidth-1)/4+1);

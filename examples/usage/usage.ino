@@ -1,6 +1,7 @@
 // Test code
 
-#include "Adafruit_SSD1351_Photon/Adafruit_SSD1351_Photon.h"
+#include "Adafruit_mfGFX.h"
+#include "Adafruit_SSD1351_Photon.h"
 #include "Bitmap.h"
 
 #define OLED_SD_SCLK A3
@@ -15,7 +16,7 @@
 Adafruit_SSD1351 display(OLED_CS, OLED_DC, OLED_SD_DI, OLED_SD_SCLK, OLED_RST);
 
 void setup() {
-    Bitmap bitmap = Bitmap(display,"my_bitmap.bmp");
+    Bitmap bitmap = Bitmap(&display,"my_bitmap.bmp");
     bitmap.draw(0,0);
 }
 

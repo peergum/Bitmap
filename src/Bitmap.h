@@ -26,7 +26,7 @@
 
 class Bitmap {
 public:
-    Bitmap(Adafruit_SSD1351 *display, char *filename);
+    Bitmap(Adafruit_SSD1351 *display, const char *filename);
     void draw(uint8_t x, uint8_t y);
     ~Bitmap(void);
 
