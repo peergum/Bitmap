@@ -3,10 +3,9 @@ language: cpp
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y nodejs
-  - sudo npm install -g particle-cli
 
 install:
-    - npm install -g particle-cli
+    - sudo npm install -g particle-cli
 
 env:
     - PARTICLE_PLATFORM=electron
