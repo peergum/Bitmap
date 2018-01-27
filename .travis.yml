@@ -2,13 +2,12 @@ language: cpp
 
 before_install:
   - sudo apt-get -qq update
+  - curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
   - sudo apt-get install -y nodejs
-
-install:
-    - npm install
-
+  - sudo npm install -g particle-cli
+  
 env:
     - PARTICLE_PLATFORM=electron
     - PARTICLE_PLATFORM=photon
 
-script: sudo npm install -g particle-cli && bundle exec make all
+script: bundle exec make all
