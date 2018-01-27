@@ -1,5 +1,7 @@
 language: cpp
 before_install:
+- openssl aes-256-cbc -K $encrypted_d4c9742c9067_key -iv $encrypted_d4c9742c9067_iv
+  -in particle.config.json.enc -out ~\/.particle/particle.config.json -d
 - sudo apt-get -qq update
 - curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
 - sudo apt-get install -y nodejs
