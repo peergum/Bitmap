@@ -4,9 +4,10 @@ before_install:
   - sudo apt-get -qq update
   - curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
   - sudo apt-get install -y nodejs
-  - npm install -g particle-cli
 
-install: make
+install:
+  - make
+  - npm install -g particle-cli
 
 env:
     - PARTICLE_PLATFORM=electron
