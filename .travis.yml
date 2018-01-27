@@ -6,7 +6,7 @@ before_install:
   - sudo npm install -g particle-cli
 
 install:
-    - sudo npm install -g particle-cli
+    - npm install -g particle-cli
 
 env:
     - PARTICLE_PLATFORM=electron
