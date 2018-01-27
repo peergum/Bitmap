@@ -1,4 +1,4 @@
-# Bitmap [![Build Status](https://travis-ci.org/peergum/Bitmap.svg?branch=master)](https://travis-ci.org/peergum/Bitmap)
+# Bitmap [![Build Status](https://travis-ci.org/peergum/Bitmap.svg?branch=master)](https://travis-ci.org/peergum/Bitmap) [electron+photon]
 Bitmap class to load a Windows BMP into a SSD1351 OLED display
 
 ## Dependencies
