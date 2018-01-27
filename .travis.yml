@@ -1,16 +1,15 @@
 language: cpp
-
 before_install:
-  - sudo apt-get -qq update
-  - curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
-  - sudo apt-get install -y nodejs
-
-install:
-  - make
-  - npm install -g particle-cli
-
+- sudo apt-get -qq update
+- curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
+- sudo apt-get install -y nodejs
+- npm install -g particle-cli
+install: make
 env:
-    - PARTICLE_PLATFORM=electron
-    - PARTICLE_PLATFORM=photon
-
+  matrix:
+  - PARTICLE_PLATFORM=electron
+  - PARTICLE_PLATFORM=photon
+  global:
+  - secure: YDokNecMQRk4U3iT4Udp7nO/kj/nJx17Jg6w5Qzr5HLQ2vSAhs1ZC6vDoVqusSiPF77oDsiuGiawetQBlbeqFYub+Y1rU55wrG36iflB7b/ax1nhFSSRLvLzNJSCYJYtwqnKPDuZe0NBxEQvNq9edCa7a+18Wa1OzVwkBEYbK9A2bAUMZIBZM/jE/e/RI6ApoFAa9rl/gm4aGjV2PbhdvPPNI7yOCkfQMYbVVCX+NZbrPsoq8/gGRT38leVX21p64ebQrniY6o0pNbbFiPEnjWR35sTUZJF1p4q9hBppSn1ktZD6k09S/vE6hpfc2zR/sXF0hzVZV54MN+lnuhE0TP0bsPDRLCkL88pe1glNXSVzTiexxmnu7SSoeVl1vBNqhCuWT4jWi/KRYuYBI9hkJ5r3lt/4QyqTiSHCfy3BxY2gWVG+fhzk76Z0TGNcM4yuA1Q/8V9/FB1gaKg9GDeq27zHsO+XPep1nEqJkelV/JG12iUVvyJof5zeKB4VEuWrRjGxcWUU3FfcgTnOt7eQlx3J+GowiCaQRKDjI38K8nbAvY1yWU97XbfHo/C9bF3lqgXOjqP5Twfv3xmBhs5iTYDAD+ix3JvGsj8HOD2dkBu4rinUD7ODvGbls/PNRnTetB8v0SJ9sJtIoE68pOciq7HsuR9GaJh5OcrZXHWjGDo=
+  - secure: CH5KRnickaslw5TdJAX2/MTcTBYcMLFglFLW0UkXhcLgKm3Q3r3YFOmVsuuvjLC49X+AppkPhOJhBkr7V0MJFmrk++daXYb0oeNostwNel3xZy2hHOxAoURkMPgZPbkERVIo4Az7q4bEl8Ap/FJIpe9GFWH3zPsPtPmmIsZw8GhTKhbUv/KrCg3oU8+ppluBYepkbm+hKAx+Qqu+F/3P7peK0CgyFxlu1jLNsmb1b4DbD/z7TYhnG2UUz7faCTvDpZpf25EuUFeYOC8lwprOyG38IupZLxF8o76QcaM2QzCVftofUMx/h2hwUy9Z70pS2GxDxHGGGGEsA5vcUAZsbTI1hUi3g5/HYflhISzqBrDYgn9j+OSVx5FRC+xOoeI4JQhH5Oqzh0VsU9KX2cYFQSxTa9MJLtFuWovwV9y7brY4B/oCvxQEyr3t8mi9nxAyE9CRNZdMauB2VfxoJJUPfsS6+vFJiRsCUXvGy12SlWlmzJo9sn8Av9LjFH7E1OJ3eu+DWoZti3BlrNLeRmsSThy2+fHzmi0kKT79LhrPwKqnpWcWZ2r8vOPp+pI+yksTgW7YfNcLCFKRYG8WUq7PTzCE/i4H80LOfTW2neWFddE4aTKAftXqqtKX3SBpwQ2eY1JcamvGqA/0YIPcVOrL5x+0ZVg2CYH3BLZi+AmKtIE=
 script: bundle exec make all
