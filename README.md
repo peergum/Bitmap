@@ -4,6 +4,7 @@ Bitmap class to load a Windows BMP into a SSD1351 OLED display
 ## Dependencies
 * Adafruit_SSD1351_Photon
 * Adafruit_mfGFX
+* SdFat
 
 ## Prerequisites
 * `char *filename` is the path to a *Windows BMP _16bits_ file* on your SDCard
