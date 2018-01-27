@@ -7,7 +7,6 @@ before_install:
 - curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
 - sudo apt-get install -y nodejs
 - npm install -g particle-cli
-install: make
 env:
   matrix:
   - PARTICLE_PLATFORM=electron
@@ -15,4 +14,4 @@ env:
   global:
   - secure: jcalmsQp+Og/F2anVs5mQSmfEApC/V1kxTaEvQX9hs0oARMwKChmxWVhkInKZdcFDfhno+/JLMtpslCtPWqEgB/L6pHu/M175KMHJNODI7YPfKAIrUkxMVsFptJ+uDJwfFasGYRwj+HuNYGr9c9EoQd8Ais3PRrmm8mQDnazFrKArQUnHMiaBQiigkTlt06BRDaHqqx5Bxk7kqw5GZS7AQeZ+WAfm3cM7+kxul8nutl2bq7SgvFitbbd6+vgFjAz9AzjYpaBpfl8ln4xNSrWFhTC8/5BleWfFgQPol27XNecZkoQukNo52okD0cUVt424hDm/CWStBnjjYqoz1Y6VgB6diZDr2r1qbD15NK8erDtEZrFs0HRpt+K0X6jzVeJa9gSCejdalQICkr/pRy8LBtO+GG4u/JMi3WQuzz2mxkUK6n1b9AVkovQzWD9vQt5TARH5cSa6C+HAHo2zHadYmuV7Z90+TPEAo6JmlYaR+iGxlkt9m60vD5eNSPeLj0Rj0uPwSY4wHQTclrvs+crp4rv+rQ4gFXKvkoAnZovxnelqD8Elv/FY0jvryLamHcNNeSn0P5uVJwrPAohlldd+XObNoQyrsspNPzSzrRvHj6qk9p+J3PqgMNgQJaBwZk7/al7OA+CXhBzfohWRt+03MSlPUJcSbQ7RtUO7a/npRY=
   - secure: CH5KRnickaslw5TdJAX2/MTcTBYcMLFglFLW0UkXhcLgKm3Q3r3YFOmVsuuvjLC49X+AppkPhOJhBkr7V0MJFmrk++daXYb0oeNostwNel3xZy2hHOxAoURkMPgZPbkERVIo4Az7q4bEl8Ap/FJIpe9GFWH3zPsPtPmmIsZw8GhTKhbUv/KrCg3oU8+ppluBYepkbm+hKAx+Qqu+F/3P7peK0CgyFxlu1jLNsmb1b4DbD/z7TYhnG2UUz7faCTvDpZpf25EuUFeYOC8lwprOyG38IupZLxF8o76QcaM2QzCVftofUMx/h2hwUy9Z70pS2GxDxHGGGGEsA5vcUAZsbTI1hUi3g5/HYflhISzqBrDYgn9j+OSVx5FRC+xOoeI4JQhH5Oqzh0VsU9KX2cYFQSxTa9MJLtFuWovwV9y7brY4B/oCvxQEyr3t8mi9nxAyE9CRNZdMauB2VfxoJJUPfsS6+vFJiRsCUXvGy12SlWlmzJo9sn8Av9LjFH7E1OJ3eu+DWoZti3BlrNLeRmsSThy2+fHzmi0kKT79LhrPwKqnpWcWZ2r8vOPp+pI+yksTgW7YfNcLCFKRYG8WUq7PTzCE/i4H80LOfTW2neWFddE4aTKAftXqqtKX3SBpwQ2eY1JcamvGqA/0YIPcVOrL5x+0ZVg2CYH3BLZi+AmKtIE=
-script: bundle exec make all
+script: make all
