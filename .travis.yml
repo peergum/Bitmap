@@ -8,7 +8,7 @@ before_install:
 env:
     - PARTICLE_PLATFORM=electron
     - PARTICLE_PLATFORM=photon
-
-install: make
-
-script: bundle exec make all
+#
+# install: make
+#
+# script: bundle exec make all
