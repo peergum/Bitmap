@@ -1,7 +1,4 @@
-all: photon.bin electron.bin
+all: ${PARTICLE_PLATFORM}.bin
 
-electron.bin: examples/usage/usage.ino
-	particle compile electron $< --saveTo electron.bin
-
-photon.bin: examples/usage/usage.ino
-	particle compile photon $< --saveTo photon.bin
+${PARTICLE_PLATFORM}.bin: examples/usage/usage.ino src/Bitmap.*
+	particle compile ${PARTICLE_PLATFORM} $< --saveTo ${PARTICLE_PLATFORM}.bin

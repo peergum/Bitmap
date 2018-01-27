@@ -2,6 +2,7 @@
 
 #include "Adafruit_mfGFX.h"
 #include "Adafruit_SSD1351_Photon.h"
+#include "SdFat.h"
 #include "Bitmap.h"
 
 #define OLED_SD_SCLK A3
