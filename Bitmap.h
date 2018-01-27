@@ -1,10 +1,18 @@
-/*
- * Project mc3wp-reader
- * Description: Electron firmware to read/store/upload data
- *  from a Troll MC III WP Flow Analyzer
- * Author: Philippe Hilger
- * Date: June 2017
- */
+/***************************************************
+    Bitmap class for SSD1351 display
+
+    This is an adaptation by Philippe Hilger ("PeerGum")
+    of the original code written by Limor Fried/Ladyada
+    for Adafruit Industries.
+
+    GPL v.3 licensed.
+
+    For the Photon or Electron, the Adafruit_mfGFX and the
+    Adafruit_SSD1351_Photon libraries are also required
+
+    Be sure to install them!
+
+ ****************************************************/
 
 #ifndef Bitmap_h
 #define Bitmap_h

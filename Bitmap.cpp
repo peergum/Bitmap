@@ -1,10 +1,18 @@
-/*
- * Project flow-analyzer
- * Description: Electron firmware to read/store/upload data
- *  from various RS485 sensors
- * Author: Philippe Hilger
- * Date: 2017-2018
- */
+/***************************************************
+    Bitmap class for SSD1351 display
+
+    This is an adaptation by Philippe Hilger ("PeerGum")
+    of the original code written by Limor Fried/Ladyada
+    for Adafruit Industries.
+
+    GPL v.3 licensed.
+
+    For the Photon or Electron, the Adafruit_mfGFX and the
+    Adafruit_SSD1351_Photon libraries are also required
+
+    Be sure to install them!
+
+ ****************************************************/
 
 #include "Bitmap.h"
 
