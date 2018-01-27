@@ -5,12 +5,10 @@ before_install:
   - sudo apt-get install -y nodejs
 
 install:
-    - sudo npm install -g particle-cli
+    - npm install
 
 env:
     - PARTICLE_PLATFORM=electron
     - PARTICLE_PLATFORM=photon
-#
-# install: make
-#
-# script: bundle exec make all
+
+script: sudo npm install -g particle-cli && bundle exec make all
