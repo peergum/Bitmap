@@ -18,7 +18,13 @@ setup() {
 }
 ```
 
+## Notes
+* image is not loaded into memory, but directly to the display
+* display is switched OFF before loading, and ON after, so the picture appears at once
+* because of the use of display SPI commands (off/on), the code won't work as is with another type of display
+
 ## Possible future improvements
 * Improving readability of picture on OLED display (by possibly adjusting the colors)
 * Reading native 24bits or 32bits BMP files
 * Reading PNG and JPG files
+* use callbacks for display off/on, to make it compatible with the GFX lib, rather than the hardware display driver
