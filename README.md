@@ -40,3 +40,4 @@ setup() {
 ## changelog
 * 0.0.2: removed serial linefeeds sent while loading the picture
 * 0.0.3: color fix (0.0.2 was not working) + handling 24 bits bitmaps + loading pictures in memory, then writing to display ram directly
+* 0.0.4: fixed dependencies
