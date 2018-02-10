@@ -18,15 +18,16 @@
 #define Bitmap_h
 
 #include "application.h"
-#include "SdFat.h"
 #include "Adafruit_mfGFX.h"
 #include "Adafruit_SSD1351_Photon.h"
+#include "SdFat.h"
 
-#define BUFFPIXEL 130
+#define BUFFPIXEL 32
 
 class Bitmap {
 public:
     Bitmap(Adafruit_SSD1351 *display, const char *filename);
+    Bitmap(Adafruit_SSD1351 *display, File bmpFile);
     void draw(uint8_t x, uint8_t y);
     ~Bitmap(void);
 
@@ -37,19 +38,18 @@ private:
     uint8_t read8(void);
 
     Adafruit_SSD1351 *_display;
-    char *_filename;
-    SdFile     bmpFile;
-    uint8_t      bmpWidth, bmpHeight;   // W+H in pixels
+    char *_filename = NULL;
+    File bmpFile;
+    uint8_t bmpWidth, bmpHeight;   // W+H in pixels
     uint8_t  bmpDepth;              // Bit depth (currently must be 24)
     uint32_t bmpImageoffset;        // Start of image data in file
     uint32_t rowSize;               // Not always = bmpWidth; may have padding
-    uint8_t  sdbuffer[2*BUFFPIXEL]; // pixel buffer (R+G+B per pixel)
-    uint32_t  buffidx = sizeof(sdbuffer); // Current position in sdbuffer
-    boolean  goodBmp = false;       // Set to true on valid header parse
+    uint8_t  sdbuffer[3*BUFFPIXEL]; // pixel buffer (R+G+B per pixel)
     boolean  flip    = true;        // BMP is stored bottom-to-top
     int      w, h, row, col;
     uint8_t  r, g, b;
     uint32_t pos = 0, startTime = millis();
+    uint8_t displayWidth, displayHeight;
 };
 
 #endif

@@ -19,40 +19,51 @@
 Bitmap::Bitmap(Adafruit_SSD1351 *display, const char *filename) {
     _filename = (char *)filename;
     _display = display;
+    bitmap.open(_filename, O_READ);
     Log.info("Bitmap object created for file %s",filename);
 }
+
+Bitmap::Bitmap(Adafruit_SSD1351 *display, File bitmap) {
+    bmpFile = bitmap;
+    _display = display;
+    Log.info("Bitmap object created");
+}
+
 
 Bitmap::~Bitmap() {
     Log.info("Bitmap object destroyed");
 }
 
 void Bitmap::draw(uint8_t x, uint8_t y) {
+    displayWidth = _display->width();
+    displayHeight = _display->height();
 
     // switch display off before loading pic
-    _display->writeCommand(SSD1351_CMD_DISPLAYOFF);
-    if ((x >= _display->width()) || (y >= _display->height())) {
+    if ((x >= displayWidth) || (y >= displayHeight)) {
         return;
     }
 
-    Log.info("Loading image %s", _filename);
+    Log.info("Loading image %s", _filename ? _filename : "");
 
     // Open requested file on SD card
-    if (!bmpFile.open(_filename)) {
+    if (!bmpFile) {
         Log.error("File not found");
         return;
     }
 
+    /*_display->writeCommand(SSD1351_CMD_DISPLAYOFF);*/
     if (!read(x,y)) {
         Log.error("Can't load bitmap");
     };
-    bmpFile.close();
     // switch display back on
-    _display->writeCommand(SSD1351_CMD_DISPLAYON);
+    /*_display->writeCommand(SSD1351_CMD_DISPLAYON);*/
 }
 
 bool Bitmap::read(uint8_t x, uint8_t y) {
+    uint32_t  buffidx;
+
     // Parse BMP header
-    if(!read16() == 0x4D42) { // BMP signature
+    if(read16() != 0x4D42) { // BMP signature
         Log.error("Not a BMP");
         return false;
     }
@@ -76,12 +87,12 @@ bool Bitmap::read(uint8_t x, uint8_t y) {
     bmpDepth = read16(); // bits per pixel
     Log.info("Bit Depth: %u", bmpDepth);
 
-    if (bmpDepth != 16 || read32() != 0) { // 0 = uncompressed
-        Log.error("Not a 16 bits uncompressed bitmap");
+    if ((bmpDepth != 16 && bmpDepth != 24) || read32() != 0) { // 0 = uncompressed
+        Log.error("Not a 16 or 24 bits uncompressed bitmap");
         return false;
     }
 
-    Log.info("Image size: %u x %u", bmpWidth, bmpHeight);
+    Log.info("Image size: %u x %d", bmpWidth, bmpHeight);
 
     // BMP rows are padded (if needed) to 4-byte boundary
     rowSize = 4*((bmpWidth-1)/4+1);
@@ -96,35 +107,88 @@ bool Bitmap::read(uint8_t x, uint8_t y) {
     // Crop area to be loaded
     w = bmpWidth;
     h = bmpHeight;
-    if (x+w > _display->width()) {
-        w = _display->width()  - x;
+    if (x+w > displayWidth) {
+        w = displayWidth  - x;
     }
-    if (y+h > _display->height()) {
-        h = _display->height() - y;
+    if (y+h > displayHeight) {
+        h = displayHeight - y;
     }
-
-    bmpFile.seekSet(bmpImageoffset);
 
     buffidx = sizeof(sdbuffer); // Force buffer reload
 
+    uint16_t color;
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
+
+    uint8_t pixelBytes = bmpDepth/8;
+
+    uint16_t *buffer;
+
+    buffer = (uint16_t *)malloc((size_t)(2*w*h));
+    if (buffer == NULL) {
+        Log.error("Can't allocate %lu bytes.", (unsigned long)2*w*h);
+        return false;
+    }
+
+    bmpFile.seek(bmpImageoffset);
+
     for (row=0; row<h; row++) { // For each scanline...
-        /*_display->goTo(x, flip ? y+h-1-row : y+row);*/
+
+        unsigned long pos;
+
+        if (flip) {// Bitmap is stored bottom-to-top order (normal BMP)
+            pos = bmpImageoffset + pixelBytes * (bmpHeight - 1 - row) * rowSize;
+        } else {    // Bitmap is stored top-to-bottom
+            pos = bmpImageoffset + pixelBytes * row * rowSize;
+        }
+        if (bmpFile.position() != pos) { // Need seek?
+            /*Log.info("pos = %lu, wanted = %lu",bmpFile.position(),pos);*/
+            bmpFile.seek(pos);
+            buffidx = sizeof(sdbuffer); // Force buffer reload
+        }
 
         // optimize by setting pins now
         for (col=0; col<w; col++) { // For each pixel...
+
             // Time to read more pixel data?
-            if (buffidx >= sizeof(sdbuffer)) { // Indeed
-                bmpFile.read(sdbuffer, sizeof(sdbuffer));
+            if (buffidx+pixelBytes > sizeof(sdbuffer)) { // Indeed
+                for (unsigned long i=buffidx; i<sizeof(sdbuffer); i++) {
+                    sdbuffer[i-buffidx] = sdbuffer[i];
+                }
+                bmpFile.read(sdbuffer+sizeof(sdbuffer)-buffidx,
+                    buffidx);
                 buffidx = 0; // Set index to beginning
             }
+            if (bmpDepth == 16) {
+                color = ((uint16_t *)sdbuffer)[buffidx/2];
+                buffidx+=2;
+            } else if (bmpDepth == 24) {
+                red = sdbuffer[buffidx++];
+                green = sdbuffer[buffidx++];
+                blue = sdbuffer[buffidx++];
+                color = _display->Color565(red,green,blue);
+            }
 
-            uint16_t color = ((uint16_t)sdbuffer[buffidx++]);
-            color |= ((uint16_t)sdbuffer[buffidx++])<<8;
-            /*Serial.printf("[%04X]",color);*/
-            _display->drawPixel(x+col, flip ? y+h-1-row : y+row, color);
+            //_display->drawPixel(x+col, flip ? y+h-1-row : y+row, color);
+            *(buffer + row * w + col) = color;
+            /*_display->writeData(color>>8);
+            _display->writeData(color);*/
         } // end pixel
-        Serial.println();
     } // end scanline
+
+    _display->writeCommand(SSD1351_CMD_SETCOLUMN);
+    _display->writeData(x);
+    _display->writeData(x+w-1);
+    _display->writeCommand(SSD1351_CMD_SETROW);
+    _display->writeData(y);
+    _display->writeData(y+h-1);
+    _display->writeCommand(SSD1351_CMD_WRITERAM);
+    for (int i = 0; i < w * h ; i++) {
+        _display->writeData(buffer[i]>>8);
+        _display->writeData(buffer[i]);
+    }
+
     Log.info("Loaded in %ld ms",millis() - startTime);
     return true;
 }
@@ -135,17 +199,17 @@ bool Bitmap::read(uint8_t x, uint8_t y) {
 
 uint16_t Bitmap::read16() {
     uint16_t result;
-    ((uint8_t *)&result)[0] = read8(); // LSB
-    ((uint8_t *)&result)[1] = read8(); // MSB
+    ((uint8_t *)&result)[0] = read8();
+    ((uint8_t *)&result)[1] = read8();
     return result;
 }
 
 uint32_t Bitmap::read32() {
     uint32_t result;
-    ((uint8_t *)&result)[0] = read8(); // LSB
+    ((uint8_t *)&result)[0] = read8();
     ((uint8_t *)&result)[1] = read8();
     ((uint8_t *)&result)[2] = read8();
-    ((uint8_t *)&result)[3] = read8(); // MSB return result;
+    ((uint8_t *)&result)[3] = read8();
     return result;
 }
 
