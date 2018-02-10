@@ -19,7 +19,7 @@
 Bitmap::Bitmap(Adafruit_SSD1351 *display, const char *filename) {
     _filename = (char *)filename;
     _display = display;
-    bitmap.open(_filename, O_READ);
+    bmpFile.open(_filename, O_READ);
     Log.info("Bitmap object created for file %s",filename);
 }
 
