@@ -151,6 +151,7 @@ bool Bitmap::read(uint8_t x, uint8_t y) {
         // optimize by setting pins now
         for (col=0; col<w; col++) { // For each pixel...
 
+            color = 0;
             // Time to read more pixel data?
             if (buffidx+pixelBytes > sizeof(sdbuffer)) { // Indeed
                 for (unsigned long i=buffidx; i<sizeof(sdbuffer); i++) {
@@ -167,7 +168,7 @@ bool Bitmap::read(uint8_t x, uint8_t y) {
                 red = sdbuffer[buffidx++];
                 green = sdbuffer[buffidx++];
                 blue = sdbuffer[buffidx++];
-                color = _display->Color565(red,green,blue);
+                color = _display->Color565(blue,green,red);
             }
 
             //_display->drawPixel(x+col, flip ? y+h-1-row : y+row, color);

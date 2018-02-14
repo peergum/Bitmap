@@ -22,7 +22,7 @@
 #include "Adafruit_SSD1351_Photon.h"
 #include "SdFat.h"
 
-#define BUFFPIXEL 32
+#define BUFFPIXEL 36
 
 class Bitmap {
 public:
