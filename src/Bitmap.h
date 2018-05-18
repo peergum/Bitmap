@@ -50,6 +50,7 @@ private:
     uint8_t  r, g, b;
     uint32_t pos = 0, startTime = millis();
     uint8_t displayWidth, displayHeight;
+    uint8_t rotation;
 };
 
 #endif
