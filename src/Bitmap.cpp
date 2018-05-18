@@ -37,6 +37,7 @@ Bitmap::~Bitmap() {
 void Bitmap::draw(uint8_t x, uint8_t y) {
     displayWidth = _display->width();
     displayHeight = _display->height();
+    rotation = _display->getRotation();
 
     // switch display off before loading pic
     if ((x >= displayWidth) || (y >= displayHeight)) {
@@ -151,14 +152,15 @@ bool Bitmap::read(uint8_t x, uint8_t y) {
         // optimize by setting pins now
         for (col=0; col<w; col++) { // For each pixel...
 
-            color = 0;
             // Time to read more pixel data?
             if (buffidx+pixelBytes > sizeof(sdbuffer)) { // Indeed
                 for (unsigned long i=buffidx; i<sizeof(sdbuffer); i++) {
                     sdbuffer[i-buffidx] = sdbuffer[i];
                 }
-                bmpFile.read(sdbuffer+sizeof(sdbuffer)-buffidx,
-                    buffidx);
+                if (bmpFile.read(sdbuffer+sizeof(sdbuffer)-buffidx,
+                    buffidx)<buffidx) {
+                    Log.warn("Read error.");
+                }
                 buffidx = 0; // Set index to beginning
             }
             if (bmpDepth == 16) {
@@ -171,8 +173,29 @@ bool Bitmap::read(uint8_t x, uint8_t y) {
                 color = _display->Color565(blue,green,red);
             }
 
+            uint16_t r,c;
+
+            switch(rotation) {
+                case 1:
+                    r = col;
+                    c = h - row - 1;
+                    break;
+                case 2:
+                    r = h - row - 1;
+                    c = w - col - 1;
+                    break;
+                case 3:
+                    r = w - col - 1;
+                    c = row;
+                    break;
+                case 0:
+                default:
+                    r = row;
+                    c = col;
+                    break;
+            }
             //_display->drawPixel(x+col, flip ? y+h-1-row : y+row, color);
-            *(buffer + row * w + col) = color;
+            *(buffer + r * w + c) = color;
             /*_display->writeData(color>>8);
             _display->writeData(color);*/
         } // end pixel
